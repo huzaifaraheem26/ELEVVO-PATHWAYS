@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Organize Your Life</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    .section-hidden {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.6s ease-out;
+    }
+    .section-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const Hero = () => (
+      <section className="section-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">TaskFlow</h1>
+        <p className="text-lg md:text-xl mb-6 max-w-2xl mx-auto">
+          Streamline your life with TaskFlow – the ultimate tool to organize, track, and conquer your tasks.
+        </p>
+        <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+          Get Started Now
+        </button>
+      </section>
+    );
+
+    const FeatureCard = ({ icon, title, description }) => (
+      <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md">
+        <span className="text-4xl mb-4">{icon}</span>
+        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <p className="text-gray-600">{description}</p>
+      </div>
+    );
+
+    const Features = () => (
+      <section className="section-hidden py-16 bg-gray-100">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Choose TaskFlow?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-4">
+          <FeatureCard
+            icon="📋"
+            title="Task Organization"
+            description="Easily categorize and prioritize tasks with intuitive drag-and-drop functionality."
+          />
+          <FeatureCard
+            icon="⏰"
+            title="Reminders & Deadlines"
+            description="Never miss a deadline with smart reminders and calendar integration."
+          />
+          <FeatureCard
+            icon="🤝"
+            title="Team Collaboration"
+            description="Share tasks and collaborate seamlessly with your team in real-time."
+          />
+        </div>
+      </section>
+    );
+
+    const ReviewCard = ({ quote, author }) => (
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <p className="text-gray-600 italic mb-4">"{quote}"</p>
+        <p className="font-semibold">{author}</p>
+      </div>
+    );
+
+    const Reviews = () => (
+      <section className="section-hidden py-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What Our Users Say</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-4">
+          <ReviewCard
+            quote="TaskFlow transformed how I manage my daily work. It's a game-changer!"
+            author="Sarah M., Freelancer"
+          />
+          <ReviewCard
+            quote="The team collaboration feature keeps us all on the same page. Highly recommend!"
+            author="James T., Project Manager"
+          />
+          <ReviewCard
+            quote="Simple, intuitive, and powerful. TaskFlow is now essential to my workflow."
+            author="Emily R., Student"
+          />
+        </div>
+      </section>
+    );
+
+    const PricingCard = ({ plan, price, features }) => (
+      <div className="bg-white p-6 rounded-lg shadow-md text-center">
+        <h3 className="text-2xl font-semibold mb-4">{plan}</h3>
+        <p className="text-3xl font-bold mb-4">{price}<span className="text-sm">/month</span></p>
+        <ul className="text-gray-600 mb-6">
+          {features.map((feature, index) => (
+            <li key={index} className="mb-2">{feature}</li>
+          ))}
+        </ul>
+        <button className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition">
+          Choose Plan
+        </button>
+      </div>
+    );
+
+    const Pricing = () => (
+      <section className="section-hidden py-16 bg-gray-100">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Pricing Plans</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-4">
+          <PricingCard
+            plan="Free"
+            price="$0"
+            features={["Unlimited Tasks", "Basic Reminders", "Single User"]}
+          />
+          <PricingCard
+            plan="Pro"
+            price="$9.99"
+            features={["Unlimited Tasks", "Smart Reminders", "Calendar Integration", "Priority Support"]}
+          />
+          <PricingCard
+            plan="Team"
+            price="$19.99"
+            features={["All Pro Features", "Team Collaboration", "Shared Workspaces", "Admin Tools"]}
+          />
+        </div>
+      </section>
+    );
+
+    const Footer = () => (
+      <footer className="section-hidden bg-gray-800 text-white py-8">
+        <div className="max-w-5xl mx-auto px-4 text-center">
+          <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
+          <p className="mb-4">Email: support@taskflow.com</p>
+          <div className="flex justify-center gap-6">
+            <a href="https://www.linkedin.com" className="text-2xl hover:text-gray-300" aria-label="LinkedIn">
+              <i className="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://www.facebook.com" className="text-2xl hover:text-gray-300" aria-label="Facebook">
+              <i className="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.twitter.com" className="text-2xl hover:text-gray-300" aria-label="Twitter">
+              <i className="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+      </footer>
+    );
+
+    const App = () => {
+      React.useEffect(() => {
+        const sections = document.querySelectorAll('.section-hidden');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('section-visible');
+              entry.target.classList.remove('section-hidden');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+        return () => observer.disconnect();
+      }, []);
+
+      return (
+        <div>
+          <Hero />
+          <Features />
+          <Reviews />
+          <Pricing />
+          <Footer />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>

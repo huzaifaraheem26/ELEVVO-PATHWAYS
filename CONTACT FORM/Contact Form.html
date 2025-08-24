@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        input:invalid, textarea:invalid {
+            border-color: red;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            input, textarea, button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <div id="form">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" required placeholder="Enter your full name">
+                <span class="error" id="fullNameError">Please enter your full name</span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+                <span class="error" id="emailError">Please enter a valid email address</span>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" required placeholder="Enter subject">
+                <span class="error" id="subjectError">Please enter a subject</span>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" required placeholder="Enter your message"></textarea>
+                <span class="error" id="messageError">Please enter a message</span>
+            </div>
+            <button type="submit" onclick="validateForm()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+            const fullName = document.getElementById('fullName');
+            const email = document.getElementById('email');
+            const subject = document.getElementById('subject');
+            const message = document.getElementById('message');
+
+            // Reset error messages
+            document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+
+            // Full Name validation
+            if (!fullName.value.trim()) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.value.trim() || !emailPattern.test(email.value)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Subject validation
+            if (!subject.value.trim()) {
+                document.getElementById('subjectError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Message validation
+            if (!message.value.trim()) {
+                document.getElementById('messageError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Form submitted successfully!');
+                // Reset form
+                fullName.value = '';
+                email.value = '';
+                subject.value = '';
+                message.value = '';
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>

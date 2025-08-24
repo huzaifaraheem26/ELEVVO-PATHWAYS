@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Blog</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Sample blog post data with context-relevant Pexels images
+    const initialPosts = [
+      { 
+        id: 1, 
+        title: "Exploring New Tech Trends", 
+        category: "Tech", 
+        description: "A deep dive into the latest tech innovations.", 
+        date: "2025-08-01", 
+        image: "https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg" // Tech: modern tech gadgets
+      },
+      { 
+        id: 2, 
+        title: "A Journey Through the Alps", 
+        category: "Travel", 
+        description: "My unforgettable hiking experience in the Alps.", 
+        date: "2025-07-15", 
+        image: "https://images.pexels.com/photos/1469122/pexels-photo-1469122.jpeg" // Travel: Alpine mountains
+      },
+      { 
+        id: 3, 
+        title: "Delicious Italian Pasta Recipe", 
+        category: "Food", 
+        description: "Learn to cook authentic Italian pasta at home.", 
+        date: "2025-06-20", 
+        image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg" // Food: Italian pasta dish
+      },
+      { 
+        id: 4, 
+        title: "AI in 2025: What's Next?", 
+        category: "Tech", 
+        description: "Predictions for AI advancements in the coming years.", 
+        date: "2025-05-10", 
+        image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg" // Tech: AI digital concept
+      },
+      { 
+        id: 5, 
+        title: "Beach Getaway in Bali", 
+        category: "Travel", 
+        description: "Tips for a perfect beach vacation in Bali.", 
+        date: "2025-04-12", 
+        image: "https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg" // Travel: Bali beach
+      },
+      { 
+        id: 6, 
+        title: "Baking Sourdough Bread", 
+        category: "Food", 
+        description: "A beginner's guide to baking sourdough at home.", 
+        date: "2025-03-05", 
+        image: "https://images.pexels.com/photos/1351238/pexels-photo-1351238.jpeg" // Food: sourdough bread
+      },
+      { 
+        id: 7, 
+        title: "The Future of Quantum Computing", 
+        category: "Tech", 
+        description: "How quantum computing could change the world.", 
+        date: "2025-02-18", 
+        image: "https://images.pexels.com/photos/4709292/pexels-photo-4709292.jpeg" // Tech: quantum computing tech
+      },
+      { 
+        id: 8, 
+        title: "Exploring Japanese Culture", 
+        category: "Travel", 
+        description: "A cultural tour through Japan's traditions.", 
+        date: "2025-01-22", 
+        image: "https://images.pexels.com/photos/237297/pexels-photo-237297.jpeg" // Travel: Japanese culture
+      },
+    ];
+
+    // Blog Post Card Component
+    function BlogPostCard({ post }) {
+      const [imgSrc, setImgSrc] = useState(post.image);
+
+      // Fallback image if the primary image fails to load
+      const handleImageError = () => {
+        setImgSrc("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg"); // Fallback: neutral placeholder
+      };
+
+      return (
+        <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
+          <img
+            src={imgSrc}
+            alt={post.title}
+            className="w-full h-48 object-cover"
+            onError={handleImageError}
+          />
+          <div className="p-4">
+            <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+            <p className="text-gray-600 mb-2">{post.description}</p>
+            <p className="text-sm text-gray-500">Posted on: {post.date}</p>
+            <p className="text-sm text-blue-600 font-medium">{post.category}</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Main App Component
+    function App() {
+      const [posts] = useState(initialPosts);
+      const [category, setCategory] = useState("All");
+      const [searchQuery, setSearchQuery] = useState("");
+      const [currentPage, setCurrentPage] = useState(1);
+      const postsPerPage = 6;
+
+      // Filter posts by category and search query
+      const filteredPosts = posts.filter(post => {
+        const matchesCategory = category === "All" || post.category === category;
+        const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      // Pagination logic
+      const indexOfLastPost = currentPage * postsPerPage;
+      const indexOfFirstPost = indexOfLastPost - postsPerPage;
+      const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+      const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+      // Handle category change
+      const handleCategoryChange = (newCategory) => {
+        setCategory(newCategory);
+        setCurrentPage(1);
+      };
+
+      // Handle search input change
+      const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+        setCurrentPage(1);
+      };
+
+      // Handle page change
+      const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+      };
+
+      return (
+        <div className="min-h-screen bg-gray-100">
+          {/* Header */}
+          <header className="bg-blue-600 text-white py-6 text-center">
+            <h1 className="text-4xl font-bold">My Personal Blog</h1>
+            <p className="mt-2 text-lg">Sharing stories about Tech, Travel, and Food</p>
+          </header>
+
+          {/* Filters and Search */}
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+              <div className="flex space-x-4">
+                {["All", "Tech", "Travel", "Food"].map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryChange(cat)}
+                    className={`px-4 py-2 rounded-md font-medium ${
+                      category === cat ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              <input
+                type="text"
+                placeholder="Search posts by title..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full sm:w-64 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+
+            {/* Blog Post Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentPosts.length > 0 ? (
+                currentPosts.map(post => <BlogPostCard key={post.id} post={post} />)
+              ) : (
+                <p className="col-span-full text-center text-gray-600">No posts found.</p>
+              )}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`px-4 py-2 rounded-md ${
+                    currentPage === page ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Render the App
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>
